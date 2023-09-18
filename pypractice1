@@ -1,0 +1,86 @@
+print("Задание 1")
+
+def count_matching_numbers(a, b, c):
+    if a == b == c:
+        return 3
+    elif a == b or b == c or a == c:
+        return 2
+    else:
+        return 0
+
+num1 = int(input("Введите первое число: "))
+num2 = int(input("Введите второе число: "))
+num3 = int(input("Введите третье число: "))
+
+result = count_matching_numbers(num1, num2, num3)
+print(f"Количество совпадающих чисел: {result}")
+
+
+print("Задание 2.1")
+print("Вариант на основе чисел")
+def num_stairs(n):
+    for i in range(1, n + 1):
+        for j in range(1, i + 1):
+            print(j, end="")
+        print()
+
+n = int(input("Введите натуральное число n: "))
+num_stairs(n)
+
+
+
+print("Вариант на основе строк")
+def str_stairs(n):
+    for i in range(1, n + 1):
+        stair = ''.join(str(j) for j in range(1, i + 1)) #join используется для обьединения элементов
+        print(stair)
+
+n = int(input("Введите натуральное число n: "))
+str_stairs(n)
+
+print("Задание 2.2")
+
+def num_pyramid(n):
+    for i in range(1, n + 1):
+        # Вывод пробелов перед числами
+        for j in range(n, i, -1):
+            print(" ", end="")
+
+        # Вывод чисел от 1 до i
+        for j in range(1, i + 1):
+            print(j, end="")
+
+        # Вывод чисел обратно от i-1 до 1
+        for j in range(i - 1, 0, -1):
+            print(j, end="")
+        print()
+
+n = int(input("Введите натуральное число n: "))
+num_pyramid(n)
+
+print("Задание 2.3")
+
+def num_2pyramid(n):
+    # Определяем максимальную разрядность чисел в пирамиде
+    max_width = len(str(n))
+
+    for i in range(1, n + 1):
+        # Вывод пробелов перед числами
+        for j in range(n, i, -1):
+            print(" " * (max_width + 1), end="")
+
+        # Вывод чисел от 1 до i
+        for j in range(1, i + 1):
+            num_str = str(j).rjust(max_width)  # Форматируем число по максимальной разрядности
+            print(num_str, end="")
+
+        # Вывод чисел обратно от i-1 до 1
+        for j in range(i - 1, 0, -1):
+            num_str = str(j).rjust(max_width)
+            print(num_str, end="")
+
+        print()
+
+n = int(input("Введите натуральное число n: "))
+num_2pyramid(n)
+
