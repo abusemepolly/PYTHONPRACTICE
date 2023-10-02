@@ -1,0 +1,30 @@
+def generate_pascals_triangle(n):
+    # Инициализация первой строки треугольника
+    result = [[1]]
+
+    # Для каждой следующей строки до n
+    for i in range(1, n):
+        # Инициализация новой строки с первой единицей
+        row = [1]
+
+        # Считаем значения для текущей строки на основе предыдущей
+        for j in range(1, i):
+            row.append(result[i - 1][j - 1] + result[i - 1][j])
+
+        # Добавляем в строку последнюю единицу
+        row.append(1)
+
+        # Добавляем строку в результат
+        result.append(row)
+
+    return result
+
+
+n = int(input("Введите количество строк для треугольника Паскаля: "))
+
+# Генерация треугольника Паскаля
+triangle = generate_pascals_triangle(n)
+
+for row in triangle:
+    print(' '.join(map(str, row)).center(10 * n))
+
