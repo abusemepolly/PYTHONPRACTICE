@@ -1,0 +1,83 @@
+print('Задание 0')
+
+def find_larger_than_previous(input_list):
+    larger_elements = []
+    for i in range(1, len(input_list)):
+        if input_list[i] > input_list[i-1]:
+            larger_elements.append(input_list[i])
+    return larger_elements
+
+input_string = input("Введите числа, разделенные пробелами: ")
+
+try:
+    input_list = [int(x) for x in input_string.split()]
+except ValueError:
+    print("Введите корректные целые числа.")
+    exit()
+
+output_list = find_larger_than_previous(input_list)
+print("Введенный список: ", input_list)
+print("Элементы больше своего предыдущего: ", output_list)
+
+
+print('Задание 1')
+def swap_min_max(input_list):
+    min_index = input_list.index(min(input_list))
+    max_index = input_list.index(max(input_list))
+    input_list[min_index], input_list[max_index] = input_list[max_index], input_list[min_index]
+    return input_list
+
+input_string = input("Введите числа, разделенные пробелами: ")
+
+try:
+    input_list = [int(x) for x in input_string.split()]
+except ValueError:
+    print("Введите корректные целые числа.")
+    exit()
+
+output_list = swap_min_max(input_list.copy())
+print("Введенный список: ", input_list)
+print("Список после замены: ", output_list)
+
+
+print('Задание 2')
+
+def common_numbers_count(list1, list2):
+
+    common_numbers = set(list1) & set(list2)
+    return len(common_numbers)
+
+
+input_string1 = input("Введите числа для первого списка, разделенные пробелами: ")
+
+input_string2 = input("Введите числа для второго списка, разделенные пробелами: ")
+
+try:
+    list1 = [int(x) for x in input_string1.split()]
+    list2 = [int(x) for x in input_string2.split()]
+except ValueError:
+    print("Введите корректные целые числа.")
+    exit()
+
+count = common_numbers_count(list1, list2)
+print(f"Количество общих чисел: {count}")
+
+
+print('Задание 3')
+
+def count_string_repetitions(input_list):
+    count_dict = {}
+    for string in input_list:
+        if string in count_dict:
+            count_dict[string] += 1
+        else:
+            count_dict[string] = 1
+    print(" ".join(map(str, count_dict.values())))
+
+
+input_string = input("Введите строки, разделенные пробелами: ")
+
+input_list = input_string.split()
+
+count_string_repetitions(input_list)
+
