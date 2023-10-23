@@ -1,0 +1,16 @@
+children = []
+with open('input.txt', 'r') as file:
+    for line in file:
+        surname, name, age = line.strip().split()
+        children.append((surname, name, int(age)))  # сохраняем фамилию, имя и возраст в виде кортежа
+
+children.sort(key=lambda child: child[2])  # сортировка по возрасту
+
+if children:
+    with open('youngest.txt', 'w') as file:
+        file.write(f"{children[0][0]} {children[0][1]} {children[0][2]}")  # самый младший
+
+    with open('oldest.txt', 'w') as file:
+        file.write(f"{children[-1][0]} {children[-1][1]} {children[-1][2]}")  # самый старший
+else:
+    print("Нет данных о детях.")
