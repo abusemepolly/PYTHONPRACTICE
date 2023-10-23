@@ -1,0 +1,30 @@
+with open("input.txt", "r") as file:
+    # Считываем все строки файла в список
+    elements = file.read()
+
+# Создаем список для хранения чисел
+numbers = []
+
+for line in elements:
+    # Разделяем строку на отдельные элементы по пробелам
+    split_line = line.strip().split()
+
+    # Обходим все элементы в разделенной строке
+    for element in split_line:
+        # Преобразуем строку в число и добавляем в список
+        try:
+            number = int(element)
+            numbers.append(number)
+        except ValueError:
+            print(f"Не удалось преобразовать '{element}' в число.")
+
+product = 1
+for number in numbers:
+    product *= number
+
+# Конвертируем произведение в строку для записи в файл
+product_str = str(product)
+
+# Открываем новый файл для записи (если файл существует, он будет перезаписан)
+with open("output.txt", "w") as file:
+    file.write(product_str)
