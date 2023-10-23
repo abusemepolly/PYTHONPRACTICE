@@ -1,0 +1,53 @@
+print("Задание 1")
+
+def main():
+
+    numbers = input()
+
+    numbers_list = numbers.split()
+
+    numbers_list = [int(num) for num in numbers_list]
+
+    numbers_set = set(numbers_list)
+
+    unique_count = len(numbers_set)
+
+    print(unique_count)
+
+if __name__ == "__main__":
+    main()
+
+print("Задание 2")
+
+def main():
+    set1 = set(map(int, input().split()))
+    set2 = set(map(int, input().split()))
+
+    is_subset = set1.issubset(set2) and set1 != set2
+
+    print(is_subset)
+
+if __name__ == "__main__":
+    main()
+
+print("Задание 3")
+
+def main():
+    n = int(input("Введите количество названных городов: "))
+
+    cities = set()
+
+    print("Введите названия городов:")
+    for _ in range(n):
+        city = input().strip()
+        cities.add(city)
+
+    new_city = input("Введите новый город: ").strip()
+
+    if new_city in cities:
+        print("REPEAT")
+    else:
+        print("OK")
+
+if __name__ == "__main__":
+    main()
