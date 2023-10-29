@@ -1,0 +1,41 @@
+import json
+import csv
+import sys
+import os
+
+def json_to_csv(json_file):
+    # Проверяем, существует ли файл
+    if not os.path.isfile(json_file):
+        print(f"Файл {json_file} не найден.")
+        return
+
+    # Определяем имя для CSV файла
+    csv_file = os.path.splitext(json_file)[0] + '.csv'
+
+    # Чтение JSON
+    with open(json_file, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+
+    # Убеждаемся, что данные - это список словарей
+    if not isinstance(data, list) or not all(isinstance(item, dict) for item in data):
+        print("JSON файл должен содержать список словарей.")
+        return
+
+    # Запись в CSV
+    with open(csv_file, 'w', newline='', encoding='utf-8') as f:
+        writer = csv.DictWriter(f, fieldnames=data[0].keys())
+        writer.writeheader() # Заголовки
+        writer.writerows(data) # Строки
+
+    print(f"Файл '{csv_file}' успешно создан.")
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Ошибка: не указан путь к файлу JSON.")
+        sys.exit(1)
+
+    json_to_csv(sys.argv[1])
+
+
+current_directory = os.getcwd()
+print(f"Текущая рабочая директория: {current_directory}") 
