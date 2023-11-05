@@ -1,0 +1,151 @@
+import csv
+import os
+import random
+
+class CustomDataFrame:
+    def __init__(self, filepath):
+        """
+        Инициализация CustomDataFrame с загрузкой данных из CSV файла.
+
+        Args:
+            filepath (str): Путь к CSV файлу для загрузки.
+        """
+        self.data = self._load_csv(filepath)
+
+    def _load_csv(self, filename):
+        """
+        Загружает данные из CSV файла.
+
+        Args:
+            filename (str): Имя файла для загрузки.
+
+        Returns:
+            list: Список строк (каждая строка представлена списком) из файла.
+        """
+        try:
+            with open(filename, mode='r', encoding='utf-8') as file:
+                reader = csv.reader(file)
+                data = list(reader)
+            return data
+        except FileNotFoundError:
+            print(f"Файл {filename} не найден.")
+            return []
+        except UnicodeDecodeError:
+            print(f"Ошибка декодирования файла {filename}.")
+            return []
+
+    def show(self, view_type='top', num_rows=5, separator=','):
+        """
+        Выводит данные на экран в заданном формате.
+
+        Args:
+            view_type (str): Тип вывода ('top', 'bottom', 'random').
+            num_rows (int): Количество строк для вывода.
+            separator (str): Разделитель для использования при выводе.
+        """
+        # Проверка и корректировка количества строк, если данных меньше
+        if len(self.data) < num_rows:
+            print(f"Доступно только {len(self.data)} строк. Выводим их все.")
+            num_rows = len(self.data)
+
+        # Выбор строк в зависимости от типа вывода
+        if view_type == 'top':
+            rows = self.data[:num_rows]
+        elif view_type == 'bottom':
+            rows = self.data[-num_rows:]
+        elif view_type == 'random':
+            rows = random.sample(self.data, num_rows)
+        else:
+            print("Неизвестный тип вывода. Используем 'top'.")
+            rows = self.data[:num_rows]
+
+        for row in rows:
+            print(separator.join(map(str, row)))
+
+    def info(self):
+        """
+        Выводит информацию о данных, включая размерность и статистику по каждому столбцу.
+        """
+        if not self.data:
+            print("Нет данных для анализа.")
+            return
+
+        # Количество строк и столбцов
+        num_rows = len(self.data) - 1  # Вычитаем строку заголовка
+        num_cols = len(self.data[0]) if self.data else 0
+        print(f"{num_rows}x{num_cols}")
+
+        # Анализ каждого столбца
+        for col_idx in range(num_cols):
+            non_empty_values = [row[col_idx] for row in self.data[1:] if row[col_idx] != '']
+            num_non_empty = len(non_empty_values)
+            data_types = set(type(value).__name__ for value in non_empty_values)
+
+            # Предполагаем string, если в столбце нет значений
+            data_type = ", ".join(data_types) if data_types else "string"
+            print(f"Колонка {col_idx + 1}: {num_non_empty} non-empty, Type: {data_type}")
+
+    def del_nan(self):
+        """
+        Удаляет из данных все строки, содержащие пустые поля.
+        """
+        self.data = [row for row in self.data if all(cell != '' for cell in row)]
+
+    def make_ds(self):
+        """
+        Делит данные на две части (70/30) и сохраняет их в соответствующие папки для обучения и тестирования.
+        """
+        # Создание директорий для хранения данных
+        base_path = 'workdata'
+        os.makedirs(os.path.join(base_path, 'Learning'), exist_ok=True)
+        os.makedirs(os.path.join(base_path, 'Testing'), exist_ok=True)
+
+        # Разделение данных
+        random.shuffle(self.data)
+        split_index = int(len(self.data) * 0.7)
+        train_data = self.data[:split_index]
+        test_data = self.data[split_index:]
+
+        # Сохранение данных в CSV файлы
+        self._write_csv(os.path.join(base_path, 'Learning', 'train.csv'), train_data)
+        self._write_csv(os.path.join(base_path, 'Testing', 'test.csv'), test_data)
+
+    def _write_csv(self, filepath, data):
+        """
+        Записывает данные в CSV файл.
+
+        Args:
+            filepath (str): Путь для сохранения файла.
+            data (list): Данные для записи.
+        """
+        with open(filepath, mode='w', newline='', encoding='utf-8') as file:
+            writer = csv.writer(file)
+            writer.writerows(data)
+
+
+# Создание экземпляра
+data_frame = CustomDataFrame('data.csv')
+
+# Вывод данных
+print("Показ первых строк:")
+data_frame.show()
+
+print("\nПоказ последних строк:")
+data_frame.show(view_type='bottom')
+
+print("\nПоказ случайных строк:")
+data_frame.show(view_type='random', num_rows=3)
+
+print("\nИнформация о данных:")
+data_frame.info()
+
+print("\nУдаление строк с пустыми полями:")
+data_frame.del_nan()
+
+print("\nИнформация после удаления пустых строк:")
+data_frame.info()
+
+print("\nСоздание наборов данных для обучения и тестирования:")
+data_frame.make_ds()
+
+
