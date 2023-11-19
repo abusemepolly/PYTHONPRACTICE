@@ -1,0 +1,160 @@
+import numpy as np
+
+
+print("Задание 1")
+
+matrix = np.loadtxt('practice9matrix.txt', delimiter=',')
+
+sum_of_elements = np.sum(matrix)
+
+min_element = np.min(matrix)
+
+max_element = np.max(matrix)
+
+print(f"Сумма всех элементов: {sum_of_elements}")
+print(f"Максимальный элемент: {max_element}")
+print(f"Минимальный элемент: {min_element}")
+
+
+print("Задание 2")
+
+def run_length_encoding(x):
+    n = len(x)
+    if n == 0:
+        return (np.array([], dtype=int), np.array([], dtype=int))
+
+    change_indices = np.where(np.diff(x) != 0)[0]
+
+    indices = np.concatenate(([0], change_indices + 1, [n]))
+
+    unique_values = np.take(x, indices[:-1])
+    counts = np.diff(indices)
+
+    return (unique_values, counts)
+
+user_input = input("Введите вектор, разделяя элементы пробелами или запятыми: ")
+
+vector_elements = user_input.replace(',', ' ').split()
+
+vector = np.array([float(elem) for elem in vector_elements])
+
+result = run_length_encoding(vector)
+print(result)
+
+print("Задание 3")
+
+random_matrix = np.random.normal(size=(10, 4))
+
+min_value = np.min(random_matrix)
+max_value = np.max(random_matrix)
+mean_value = np.mean(random_matrix)
+std_deviation = np.std(random_matrix)
+
+first_five_rows = random_matrix[:5, :]
+
+print("Сгенерированный массив:\n", random_matrix)
+print("Минимальное значение:", min_value)
+print("Максимальное значение:", max_value)
+print("Среднее значение:", mean_value)
+print("Стандартное отклонение:", std_deviation)
+print("Первые 5 строк массива:\n", first_five_rows)
+
+
+print("Задание 4")
+
+user_input = input("Введите вектор, разделяя элементы пробелами: ")
+
+vector_elements = user_input.split()
+x = np.array([int(elem) for elem in vector_elements])
+
+zero_indices = np.where(x == 0)[0]
+
+valid_indices = zero_indices[zero_indices < len(x) - 1] + 1
+if len(valid_indices) > 0:
+    max_after_zero = np.max(x[valid_indices])
+else:
+    max_after_zero = None
+
+print(f"Максимальный элемент после нуля: {max_after_zero}")
+
+
+print("Задание 5")
+
+
+def log_multivariate_normal_density(X, m, C):
+    """
+    Вычисляет логарифм плотности многомерного нормального распределения.
+
+    Параметры:
+    X - массив точек размера (N, D)
+    m - вектор математического ожидания длины D
+    C - матрица ковариаций размера (D, D)
+    """
+    D = X.shape[1]
+
+    # Проверка размерности
+    if m.shape[0] != D or C.shape[0] != D or C.shape[1] != D:
+        raise ValueError("Размерности не согласованы")
+
+    # Вычисление определителя и обратной матрицы ковариаций
+    det_C = np.linalg.det(C)
+    inv_C = np.linalg.inv(C)
+
+    # Формула многомерного нормального распределения
+    term1 = np.log((2 * np.pi) ** (-D / 2) * det_C ** (-1 / 2))
+    term2 = -0.5 * np.sum((X - m) @ inv_C * (X - m), axis=1)
+
+    return term1 + term2
+
+
+X = np.random.rand(5, 3)
+m = np.array([0, 0, 0])
+C = np.eye(3)
+
+
+log_density = log_multivariate_normal_density(X, m, C)
+
+print("Логарифм плотности:", log_density)
+
+
+print("Задание 6")
+
+rows = int(input("Введите количество строк массива: "))
+cols = int(input("Введите количество столбцов массива: "))
+
+a = np.empty((rows, cols), dtype=int)
+for i in range(rows):
+    row_input = input(f"Введите элементы строки {i+1}, разделяя их пробелами: ")
+    a[i] = np.array([int(x) for x in row_input.split()])
+
+if rows >= 3:
+    a[[0, 2]] = a[[2, 0]]
+else:
+    print("В массиве недостаточно строк для перестановки.")
+
+print("Массив после перестановки строк:\n", a)
+
+
+print("Задание 7")
+
+url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
+
+# Загрузка данных
+iris = np.genfromtxt(url, delimiter=',', dtype='object', usecols=[4])  # Индекс 4 для последнего столбца
+
+unique_species, counts = np.unique(iris, return_counts=True)
+
+for species, count in zip(unique_species, counts):
+    print(f"Species: {species.decode('utf-8')}, Count: {count}")
+
+
+print("Задание 8")
+
+user_input = input("Введите массив, разделяя элементы пробелами: ")
+
+array = np.array([int(x) for x in user_input.split()])
+
+# Нахождение индексов ненулевых элементов
+non_zero_indices = np.nonzero(array)[0]
+
+print("Индексы ненулевых элементов:", non_zero_indices)
