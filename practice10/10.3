@@ -1,0 +1,33 @@
+import matplotlib
+matplotlib.use('Qt5Agg')  
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
+
+# Определение функции для создания анимации фигуры Лисажу
+def lissajous_animation(a, b, delta, t):
+    fig, ax = plt.subplots()
+
+    # Начальные значения для фигуры Лисажу
+    x, y = np.sin(a * t + delta), np.sin(b * t)
+    line, = ax.plot(x, y)
+
+    def update(frame):
+        # Обновление частоты b на каждом кадре
+        new_b = frame / 10 + b
+        x, y = np.sin(a * t + delta), np.sin(new_b * t)
+        line.set_data(x, y)
+        return line,
+
+    # Создание анимации
+    ani = FuncAnimation(fig, update, frames=np.arange(0, 100, 0.5), blit=True)
+    return ani
+
+# Параметры для фигуры Лисажу
+a = 3  # Частота для оси X
+b = 2  # Начальная частота для оси Y
+delta = 0  # Сдвиг фаз
+t = np.linspace(0, 2 * np.pi, 1000)  # Временной ряд
+
+ani = lissajous_animation(a, b, delta, t)
+plt.show()
