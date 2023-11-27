@@ -1,0 +1,30 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Создание одномерных массивов от -2 до 2 с 16 значениями
+x = np.linspace(-2, 2, 16)
+y = np.linspace(-2, 2, 16)
+
+# Создание двумерных сеток для координат x и y
+x, y = np.meshgrid(x, y)
+
+# Генерация случайной поверхности z с использованием равномерного распределения
+z = np.random.rand(*x.shape) * 2
+
+# Расчёт среднеквадратической ошибки по сравнению со средним значением z
+mse = np.sqrt(np.square(z - np.mean(z)))
+
+# Создание фигуры для графиков
+fig = plt.figure(figsize=(10, 6))
+
+# Добавление первого подграфика с 3D-проекцией для MSE
+ax1 = fig.add_subplot(121, projection='3d')
+ax1.plot_surface(x, y, mse, cmap='viridis')  # Использование цветовой карты 'viridis'
+ax1.set_title('MSE')  # Заголовок графика
+
+# Добавление второго подграфика с 3D-проекцией для логарифмической шкалы MSE
+ax2 = fig.add_subplot(122, projection='3d')
+ax2.plot_surface(x, y, np.log1p(mse), cmap='plasma')  # Использование цветовой карты 'plasma'
+ax2.set_title('MSE с логарифмической шкалой по z')  # Заголовок графика
+
+plt.show()
