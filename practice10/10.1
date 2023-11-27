@@ -1,0 +1,26 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.special import legendre
+
+# Создаем диапазон значений x от -1 до 1, 400 точек
+x = np.linspace(-1, 1, 400)
+
+# Создаем фигуру для отображения графиков
+plt.figure(figsize=(10, 6))
+
+# Генерируем и отображаем полиномы Лежандра от 1 до 7 степени
+for i in range(1, 8):
+    # Получаем полином Лежандра степени i
+    poly = legendre(i)
+    # Вычисляем значения полинома в точках x
+    y = poly(x)
+    # Рисуем график полинома
+    plt.plot(x, y, label=f'n = {i}')
+
+plt.title('Полиномы Лежандра')
+
+plt.legend()
+
+plt.grid(True)
+
+plt.show()
