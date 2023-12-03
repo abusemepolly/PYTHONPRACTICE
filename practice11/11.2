@@ -1,0 +1,18 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Параметры для нормального распределения
+mu = 0  # среднее значение
+sigma = 1  # стандартное отклонение
+n_samples = 1000  # количество выборок
+
+# Генерация выборок из нормального распределения
+samples = np.random.normal(mu, sigma, n_samples)
+
+# Визуализация в виде гистограммы
+plt.hist(samples, bins=30, density=True, alpha=0.6, color='g')
+
+plt.title('Гистограмма нормального распределения')
+plt.xlabel('Значения')
+plt.ylabel('Плотность вероятности')
+plt.show()
