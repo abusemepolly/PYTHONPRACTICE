@@ -1,0 +1,38 @@
+import matplotlib.pyplot as plt
+import csv
+from datetime import datetime
+
+file_path = '/Users/adyl/PycharmProjects/practice11/passengers.csv'
+
+# Инициализация списков для хранения дат и количества пассажиров
+dates = []
+passenger_counts = []
+
+with open(file_path, 'r') as file:
+    reader = csv.reader(file)
+    next(reader)  
+    for row in reader:
+        # Преобразование строки даты в объект datetime и добавление в список дат
+        dates.append(datetime.strptime(row[0], '%Y-%m'))
+        # Добавление количества пассажиров в список
+        passenger_counts.append(int(row[1]))
+
+# Построение линейного графика 
+plt.figure(figsize=(12, 6))
+plt.plot(dates, passenger_counts, marker='o', linestyle='-', color='b')
+plt.title('Пассажиропоток по месяцам')
+plt.xlabel('Дата')
+plt.ylabel('Количество пассажиров')
+plt.xticks(rotation=45)  # Поворот меток на оси X для лучшей читаемости
+plt.tight_layout()  # Автоматическая корректировка отступов
+plt.show()
+
+# Отбор данных для гистограммы 
+hist_data = [count for date, count in zip(dates, passenger_counts) if 1951 <= date.year <= 1955]
+
+plt.figure(figsize=(12, 6))
+plt.hist(hist_data, bins=12, color='g', alpha=0.7)
+plt.title('Распределение пассажиров по месяцам (1951-1955)')
+plt.xlabel('Количество пассажиров')
+plt.ylabel('Частота')
+plt.show()
