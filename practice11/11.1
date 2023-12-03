@@ -1,0 +1,19 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.signal import square
+
+# Установка параметров прямоугольного сигнала
+# t - массив временных точек от 0 до 1 секунды, 500 точек всего
+t = np.linspace(0, 1, 500)
+# f - частота сигнала в герцах
+f = 10
+
+x = square(2 * np.pi * f * t)
+
+plt.plot(t, x) 
+plt.title('Прямоугольный сигнал')
+plt.xlabel('Время (секунды)')
+plt.ylabel('Амплитуда')
+plt.grid(True)
+plt.show()
+
